@@ -1,7 +1,11 @@
 name: Ping
 version: ${project.version}
 main: io.github.portlek.ping.Ping
-api-version: 1.13
 authors: [portlek]
 description: Tag and ping a player.
 website: https://www.github.com/portlek
+
+permissions:
+  ping.use:
+    description: Allows you ping a player
+    default: true

@@ -1,0 +1,10 @@
+tag-item: '@'
+player-name-color: 'YELLOW'
+ping-sound: ''
+ping-title:
+  enable: true
+  title: ''
+  sub-title:
+ping-actionbar:
+  enable: true
+  message: ''
