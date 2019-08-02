@@ -1,10 +1,20 @@
 tag-item: '@'
+
 player-name-color: 'YELLOW'
-ping-sound: ''
-ping-title:
+
+ping-message:
   enable: true
-  title: ''
-  sub-title:
+  message: '&a%sender% Pinged you, %player%!'
+
+ping-sound:
+  enable: true
+  sound: ''
+
 ping-actionbar:
   enable: true
-  message: ''
+  actionbar: '&a%sender% Pinged you, %player%!'
+
+ping-title:
+  enable: true
+  title: '&a%sender% Pinged you, %player%!'
+  sub-title: '&a%sender% Pinged you, %player%!'
