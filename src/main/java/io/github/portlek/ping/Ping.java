@@ -1,6 +1,7 @@
 package io.github.portlek.ping;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -58,7 +59,14 @@ public final class Ping extends JavaPlugin implements Listener {
                 continue;
             }
 
-            
+            final String colorString = config.getString("player-name-color");
+            final ChatColor chatColor = ChatColor.valueOf(
+                colorString == null
+                    ? "RESET"
+                    : colorString
+            );
+
+            builder.append(chatColor).append(messagePiece).append(ChatColor.RESET).append(" ");
         }
 
         event.setMessage(builder.toString());
