@@ -6,10 +6,6 @@ ping-message:
   enable: true
   message: '&a%sender% Pinged you, %player%!'
 
-ping-sound:
-  enable: true
-  sound: ''
-
 ping-actionbar:
   enable: true
   actionbar: '&a%sender% Pinged you, %player%!'
@@ -18,3 +14,10 @@ ping-title:
   enable: true
   title: '&a%sender% Pinged you, %player%!'
   sub-title: '&a%sender% Pinged you, %player%!'
+  fade-in: 20
+  show-time: 20
+  fade-out: 20
+
+ping-sound:
+  enable: true
+  sound: ''
