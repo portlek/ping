@@ -40,6 +40,7 @@ public final class Ping extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        getConfig().options().copyHeader(true);
 
         final FileConfiguration config = getConfig();
 
@@ -52,7 +53,7 @@ public final class Ping extends JavaPlugin implements Listener {
 
         message = config.getString("ping-message.message");
 
-        actionBarMessage = config.getString("ping-message.actionbar");
+        actionBarMessage = config.getString("ping-actionbar.actionbar");
 
         titleMessage = config.getString("ping-title.title");
         subTitleMessage = config.getString("ping-title.sub-title");
@@ -84,23 +85,22 @@ public final class Ping extends JavaPlugin implements Listener {
         final List<Player> players = new ArrayList<>();
 
         for (String messageSplit : split) {
-
             if (!messageSplit.contains(pingItem)) {
                 builder.append(messageSplit).append(" ");
                 continue;
             }
-
             final String messagePiece = messageSplit.replaceAll(pingItem, "");
             final Player target = Bukkit.getPlayer(messagePiece);
-
             if (target == null) {
                 builder.append(messageSplit).append(" ");
                 continue;
             }
-
+            if (target.equals(event.getPlayer())) {
+                builder.append(messageSplit).append(" ");
+                continue;
+            }
             if (!players.contains(target))
                 players.add(target);
-
             builder.append(chatColor).append(messagePiece).append(ChatColor.RESET).append(" ");
         }
 
@@ -108,10 +108,7 @@ public final class Ping extends JavaPlugin implements Listener {
             if (messageEnable) {
                 if (message != null && !message.isEmpty()) {
                     target.sendMessage(
-                        c(message
-                            .replaceAll("%sender%", event.getPlayer().getName())
-                            .replaceAll("%player%", target.getName())
-                        )
+                        c(message, event.getPlayer(), target)
                     );
                 }
             }
@@ -119,7 +116,7 @@ public final class Ping extends JavaPlugin implements Listener {
             if (actionBarEnable) {
                 if (actionBarMessage != null && !actionBarMessage.isEmpty()) {
                     final ActionBarPlayer actionBarPlayer = new ActionBarPlayerOf(target);
-                    actionBarPlayer.sendActionBar(c(actionBarMessage));
+                    actionBarPlayer.sendActionBar(c(actionBarMessage, event.getPlayer(), target));
                 }
             }
 
@@ -127,8 +124,8 @@ public final class Ping extends JavaPlugin implements Listener {
                 final TitlePlayer titlePlayer = new TitlePlayerOf(target);
 
                 titlePlayer.sendTitle(
-                    titleMessage == null ? "" : c(titleMessage),
-                    subTitleMessage == null ? "" : c(subTitleMessage),
+                    titleMessage == null ? "" : c(titleMessage, event.getPlayer(), target),
+                    subTitleMessage == null ? "" : c(subTitleMessage, event.getPlayer(), target),
                     fadeIn, showTime, fadeOut
                 );
             }
@@ -147,8 +144,10 @@ public final class Ping extends JavaPlugin implements Listener {
     }
 
     @NotNull
-    private String c(@NotNull final String text) {
-        return ChatColor.translateAlternateColorCodes('&', text);
+    private String c(@NotNull final String text, @NotNull final Player sender, @NotNull final Player target) {
+        return ChatColor.translateAlternateColorCodes('&', text)
+            .replaceAll("%sender%", sender.getName())
+            .replaceAll("%player%", target.getName());
     }
 
 }

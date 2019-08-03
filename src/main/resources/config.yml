@@ -1,4 +1,4 @@
-tag-item: '@'
+ping-item: '@'
 
 player-name-color: 'YELLOW'
 
@@ -15,9 +15,11 @@ ping-title:
   title: '&a%sender% Pinged you, %player%!'
   sub-title: '&a%sender% Pinged you, %player%!'
   fade-in: 20
-  show-time: 20
+  show-time: 60
   fade-out: 20
 
+#You can find all sounds here!
+#https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 ping-sound:
   enable: true
-  sound: ''
+  sound: 'ENTITY_PLAYER_LEVELUP'
