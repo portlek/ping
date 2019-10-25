@@ -43,6 +43,7 @@
                         <configuration>
                             <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>D:\sv\plugins\${project.name}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
