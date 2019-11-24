@@ -1,8 +1,6 @@
 package io.github.portlek.ping;
 
-import io.github.portlek.actionbar.api.ActionBarPlayer;
 import io.github.portlek.actionbar.base.ActionBarPlayerOf;
-import io.github.portlek.title.api.TitlePlayer;
 import io.github.portlek.title.base.TitlePlayerOf;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -75,9 +73,9 @@ public final class Ping extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void ping(AsyncPlayerChatEvent event) {
-        if (event.isCancelled()) return;
-
-        if (pingItem == null || !event.getMessage().contains(pingItem)) return;
+        if (event.isCancelled() || pingItem == null || !event.getMessage().contains(pingItem)) {
+            return;
+        }
 
         final String[] split = event.getMessage().split(" ");
         final StringBuilder builder = new StringBuilder();
@@ -85,57 +83,45 @@ public final class Ping extends JavaPlugin implements Listener {
         final List<Player> players = new ArrayList<>();
 
         for (String messageSplit : split) {
-            if (!messageSplit.contains(pingItem)) {
-                builder.append(messageSplit).append(" ");
-                continue;
-            }
             final String messagePiece = messageSplit.replaceAll(pingItem, "");
             final Player target = Bukkit.getPlayer(messagePiece);
-            if (target == null) {
-                builder.append(messageSplit).append(" ");
+
+            if (!messageSplit.contains(pingItem) ||target == null || target.equals(event.getPlayer())) {
+                builder.append(messageSplit).append( " ");
                 continue;
             }
-            if (target.equals(event.getPlayer())) {
-                builder.append(messageSplit).append(" ");
-                continue;
-            }
-            if (!players.contains(target))
+
+            if (!players.contains(target)){
                 players.add(target);
+            }
+
             builder.append(chatColor).append(messagePiece).append(ChatColor.RESET).append(" ");
         }
 
         players.forEach(target -> {
-            if (messageEnable) {
-                if (message != null && !message.isEmpty()) {
-                    target.sendMessage(
-                        c(message, event.getPlayer(), target)
-                    );
-                }
+            if (messageEnable && message != null && !message.isEmpty()) {
+                target.sendMessage(
+                    c(message, event.getPlayer(), target)
+                );
             }
 
-            if (actionBarEnable) {
-                if (actionBarMessage != null && !actionBarMessage.isEmpty()) {
-                    final ActionBarPlayer actionBarPlayer = new ActionBarPlayerOf(target);
-                    actionBarPlayer.sendActionBar(c(actionBarMessage, event.getPlayer(), target));
-                }
+            if (actionBarEnable && actionBarMessage != null && !actionBarMessage.isEmpty()) {
+                new ActionBarPlayerOf(target).sendActionBar(c(actionBarMessage, event.getPlayer(), target));
             }
 
             if (titleEnable) {
-                final TitlePlayer titlePlayer = new TitlePlayerOf(target);
-
-                titlePlayer.sendTitle(
+                new TitlePlayerOf(target).sendTitle(
                     titleMessage == null ? "" : c(titleMessage, event.getPlayer(), target),
                     subTitleMessage == null ? "" : c(subTitleMessage, event.getPlayer(), target),
                     fadeIn, showTime, fadeOut
                 );
             }
 
-            if (soundEnable) {
-                if (soundString != null && !soundString.isEmpty()) {
-                    try {
-                        target.playSound(target.getLocation(), Sound.valueOf(soundString), 1, 3);
-                    } catch (Exception ignore) {
-                    }
+            if (soundEnable && soundString != null && !soundString.isEmpty()) {
+                try {
+                    target.playSound(target.getLocation(), Sound.valueOf(soundString), 1, 3);
+                } catch (Exception ignored) {
+                    // ignored
                 }
             }
         });
