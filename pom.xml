@@ -6,7 +6,7 @@
 
     <groupId>io.github.portlek</groupId>
     <artifactId>ping</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>Ping</name>
@@ -43,7 +43,6 @@
                         <configuration>
                             <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>D:\sv\plugins\${project.name}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -63,6 +62,10 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
             <id>portlek-maven</id>
             <url>https://dl.bintray.com/portlek/maven</url>
         </repository>
@@ -78,6 +81,18 @@
             <groupId>io.github.portlek</groupId>
             <artifactId>title</artifactId>
             <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.portlek</groupId>
+            <artifactId>mc-yaml</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.14-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
